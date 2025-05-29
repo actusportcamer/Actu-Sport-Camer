@@ -2,15 +2,5 @@
     "version": 2,
     "rewrites": [
       { "source": "/(.*)", "destination": "/" }
-    ],
-    "headers": [
-      {
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "application/xml"
-          }
-        ]
-      }
     ]
   }
