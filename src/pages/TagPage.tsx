@@ -1,26 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ChevronLeft } from 'lucide-react';
 import Container from '../components/ui/Container';
 import PostCard from '../components/blog/PostCard';
 import TagCloud from '../components/blog/TagCloud';
-import { getPostsByTag, getAllTags } from '../data/posts';
+import { getAllTags } from '../data/posts';
+import { databases } from '../AppwriteConfig'
+import { Query } from 'appwrite';
 
 export default function TagPage() {
-  const { slug } = useParams<{ slug: string }>();
+  const { tag } = useParams();
   const allTags = getAllTags();
+  const [ posts, setPost] = useState([])
   
-  // Convert slug to tag format (e.g., "web-development" to "Web Development")
-  const tagFromSlug = slug ? slug.split('-').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1)
-  ).join(' ') : '';
-  
-  const tag = allTags.find(t => 
-    t.toLowerCase() === tagFromSlug.toLowerCase()
-  ) || tagFromSlug;
-  
-  const posts = getPostsByTag(tag);
+  useEffect(() => {
+    const getBlog = async () => {
+      try {
+        const response = await databases.listDocuments(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
+          [
+            Query.search('tags', tag)
+          ]
+        );
+        setPost(response.documents); // Returns an array of documents
+      } catch (error) {
+        console.error("Error fetching collection:", error);
+      }
+    }
+    getBlog();
+  }, []);
   
   return (
     <>
@@ -67,7 +77,7 @@ export default function TagPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {posts.map((post) => (
-                <PostCard key={post.id} post={post} />
+                <PostCard key={post.$id} post={post} />
               ))}
             </div>
           )}

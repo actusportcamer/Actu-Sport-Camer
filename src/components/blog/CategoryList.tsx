@@ -13,7 +13,7 @@ export default function CategoryList({ categories, className = '' }: CategoryLis
       {categories.map((category) => (
         <Link
           key={category.id}
-          to={`/category/${category.slug}`}
+          to={`/category/${category.name}`}
           className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium text-gray-700 transition-colors"
         >
           {category.name}

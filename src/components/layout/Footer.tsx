@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Container from '../ui/Container';
 import { Mail, Twitter, Linkedin } from 'lucide-react';
 import Button from '../ui/Button';
 import logo from '../../img/logo.png'
+import LoginModal from '../LoginModal';
 
 export default function Footer() {
+
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
   return (
     <footer className="bg-gray-900 text-white py-12">
       <Container>
@@ -40,7 +44,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
               <li><Link to="/blog" className="text-gray-300 hover:text-white transition-colors">Blog</Link></li>
-              <li><Link to="/categories" className="text-gray-300 hover:text-white transition-colors">Categories</Link></li>
+              <li><Link to="/category/Football" className="text-gray-300 hover:text-white transition-colors">Categories</Link></li>
               <li><Link to="/about" className="text-gray-300 hover:text-white transition-colors">About</Link></li>
               <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
             </ul>
@@ -64,10 +68,15 @@ export default function Footer() {
             </form>
           </div>
         </div>
+
+        <LoginModal
+         isOpen={isLoginOpen}
+         onClose={() => setIsLoginOpen(false)}
+        />
         
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} InsightBlog. All rights reserved.
+            © {new Date().getFullYear()} Actu Sport Camer. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">
@@ -76,9 +85,9 @@ export default function Footer() {
             <Link to="/terms" className="text-gray-400 hover:text-white text-sm transition-colors">
               Terms of Service
             </Link>
-            <Link to="/sitemap" className="text-gray-400 hover:text-white text-sm transition-colors">
-              Sitemap
-            </Link>
+            <span onClick={() => setIsLoginOpen(true) } className="text-gray-400 hover:text-white text-sm cursor-pointer transition-colors">
+              Admin
+            </span>
           </div>
         </div>
       </Container>

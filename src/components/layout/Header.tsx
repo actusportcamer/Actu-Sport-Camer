@@ -8,7 +8,7 @@ import logo from '../../img/logo.png'
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Blog', href: '/blog' },
-  { name: 'Categories', href: '/category/react' },
+  { name: 'Categories', href: '/category/Football' },
   { name: 'About', href: '/about' },
   { name: 'Contact', href: '/contact' }
 ];

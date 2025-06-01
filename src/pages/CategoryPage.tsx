@@ -1,17 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ChevronLeft } from 'lucide-react';
 import Container from '../components/ui/Container';
 import PostCard from '../components/blog/PostCard';
 import { getPostsByCategory, getAllCategories } from '../data/posts';
+import { databases } from '../AppwriteConfig'
+import { Query } from 'appwrite';
 
 export default function CategoryPage() {
-  const { slug } = useParams<{ slug: string }>();
+  const { category } = useParams();
   const categories = getAllCategories();
-  const category = categories.find(c => c.slug === slug);
+
+  const [ posts, setPost] = useState([])
   
-  const posts = getPostsByCategory(category?.name || '');
+  useEffect(() => {
+    const getBlog = async () => {
+      try {
+        const response = await databases.listDocuments(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
+          [
+            Query.equal('category', category)
+          ]
+        );
+        setPost(response.documents); // Returns an array of documents
+      } catch (error) {
+        console.error("Error fetching collection:", error);
+      }
+    }
+    getBlog();
+  }, []);
   
   if (!category) {
     return (
@@ -36,8 +55,8 @@ export default function CategoryPage() {
   return (
     <>
       <Helmet>
-        <title>{category.name} Articles | InsightBlog</title>
-        <meta name="description" content={`Browse our collection of articles about ${category.name}`} />
+        <title>{category} Articles | InsightBlog</title>
+        <meta name="description" content={`Browse our collection of articles about ${category}`} />
       </Helmet>
       
       <section className="pt-16 pb-10 bg-gradient-to-r from-blue-50 to-purple-50">
@@ -51,9 +70,9 @@ export default function CategoryPage() {
           </Link>
           
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">{category.name}</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">{category}</h1>
             <p className="text-xl text-gray-600 max-w-3xl">
-              Browse our collection of articles and insights about {category.name.toLowerCase()}.
+              Browse our collection of articles and insights about {category}.
             </p>
           </div>
         </Container>

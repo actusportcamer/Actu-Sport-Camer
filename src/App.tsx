@@ -14,18 +14,21 @@ import DashboardPage from './dashboard/DashboardPage';
 import ArticlesPage from './dashboard/ArticlesPage';
 import NewArticlePage from './dashboard/NewArticlePage';
 import './App.css'
+import ScrollTop from './components/ScrollTop';
+import EditPage from './dashboard/EditPage';
 
 function App() {
   return (
     <HelmetProvider>
       <Router>
+        <ScrollTop />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
             <Route path="blog" element={<BlogPage />} />
-            <Route path="blog/:slug" element={<PostPage />} />
-            <Route path="category/:slug" element={<CategoryPage />} />
-            <Route path="tag/:slug" element={<TagPage />} />
+            <Route path="blog/:id" element={<PostPage />} />
+            <Route path="category/:category" element={<CategoryPage />} />
+            <Route path="tag/:tag" element={<TagPage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="contact" element={<ContactPage />} />
             <Route path="*" element={<NotFoundPage />} />
@@ -36,6 +39,7 @@ function App() {
             <Route index element={<DashboardPage />} />
             <Route path="articles" element={<ArticlesPage />} />
             <Route path="articles/new" element={<NewArticlePage />} />
+            <Route path="edit/:blogId" element={<EditPage />} />
           </Route>
 
         </Routes>

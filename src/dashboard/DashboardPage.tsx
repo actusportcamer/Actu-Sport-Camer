@@ -1,15 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { FileText, Users, Eye, TrendingUp } from 'lucide-react';
+import { FileText, Eye,  PcCaseIcon, GalleryVertical, User2 } from 'lucide-react';
+import { Query } from 'appwrite';
+import { databases } from '../AppwriteConfig'
+import moment from 'moment';
 
 const stats = [
   { label: 'Total Articles', value: '24', icon: FileText, change: '+3 this week' },
   { label: 'Total Views', value: '45.2K', icon: Eye, change: '+12% this month' },
-  { label: 'Subscribers', value: '1.2K', icon: Users, change: '+48 this week' },
-  { label: 'Engagement Rate', value: '5.6%', icon: TrendingUp, change: '+0.8% this month' },
 ];
 
 export default function DashboardPage() {
+
+  const [ blogTotals, setBlogTotal] = useState([])
+  const [ blogs, setBlog] = useState([])
+
+  useEffect(() => {
+    const getBlog = async () => {
+      try {
+        const response = await databases.listDocuments(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
+        [
+          Query.limit(4)
+        ]
+        );
+        setBlogTotal(response.total); // Returns an array of documents
+        setBlog(response.documents)
+      } catch (error) {
+        console.error("Error fetching collection:", error);
+      }
+    }
+    getBlog();
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -19,58 +43,92 @@ export default function DashboardPage() {
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-6">Dashboard Overview</h1>
         
-        <div className="flex flex-wrap justify-between gap-2 mb-8">
-          {stats.map((stat) => (
-            <div key={stat.label} className="bg-white p-6 rounded-lg shadow-sm border w-60 border-gray-100">
+        <div className="flex sm:flex-row flex-col justify-between gap-2 mb-8">
+            <div className="bg-white p-6 rounded-lg shadow-sm border w-full border-gray-100">
               <div className="flex items-center justify-between mb-4">
-                <stat.icon className="h-6 w-6 text-blue-600" />
-                <span className="text-sm w-32 text-green-600">{stat.change}</span>
+                <GalleryVertical className="h-6 w-6 text-blue-600" />
+                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Published
+                </span>
               </div>
-              <h3 className="text-sm font-medium text-gray-500">{stat.label}</h3>
-              <p className="text-2xl font-semibold text-gray-900 mt-1">{stat.value}</p>
+              <h3 className="text-sm font-medium text-gray-500">Articles</h3>
+              <p className="text-xl font-semibold mt-3">{blogTotals}</p>
             </div>
-          ))}
+            <div className="bg-white p-6 rounded-lg shadow-sm border w-full border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <User2 className="h-6 w-6 text-blue-600" />
+                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Admins
+                </span>
+              </div>
+              <h3 className="text-sm font-medium text-gray-500">Users</h3>
+              <p className="text-2xl font-semibold text-gray-900 mt-1">2</p>
+            </div>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Articles</h2>
-            <div className="space-y-4">
-              {/* Recent Articles List */}
-              <div className="border-b border-gray-100 pb-4">
-                <h3 className="font-medium text-gray-900">The Future of Web Development</h3>
-                <p className="text-sm text-gray-500 mt-1">Published 2 days ago • 1.2K views</p>
-              </div>
-              <div className="border-b border-gray-100 pb-4">
-                <h3 className="font-medium text-gray-900">Mastering CSS Grid</h3>
-                <p className="text-sm text-gray-500 mt-1">Published 4 days ago • 856 views</p>
-              </div>
-              <div className="pb-4">
-                <h3 className="font-medium text-gray-900">React Performance Tips</h3>
-                <p className="text-sm text-gray-500 mt-1">Published 1 week ago • 2.1K views</p>
-              </div>
-            </div>
+            {
+              blogs && blogs.map((blog) => (
+                <div>
+                  <div className="space-y-4">
+                    {/* Recent Articles List */}
+                    <div className="border-b border-gray-100 pb-4">
+                      <h3 className="font-medium text-gray-900">{blog.title}</h3>
+                      <p className="text-sm text-gray-500 mt-1">Published {moment(blog.publishedAt).fromNow()} • {blog.view} views</p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
           </div>
           
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Popular Categories</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Our Categories</h2>
             <div className="space-y-4">
               {/* Categories List */}
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">React</span>
-                <span className="text-sm text-gray-500">12 articles</span>
+                <span className="text-gray-700">Footabll</span>
+                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Published
+                </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">CSS</span>
-                <span className="text-sm text-gray-500">8 articles</span>
+                <span className="text-gray-700">Basketball</span>
+                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Published
+                </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">JavaScript</span>
-                <span className="text-sm text-gray-500">6 articles</span>
+                <span className="text-gray-700">Tennis</span>
+                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Published
+                </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">Design</span>
-                <span className="text-sm text-gray-500">4 articles</span>
+                <span className="text-gray-700">Cycling</span>
+                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Published
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700">Volleyball</span>
+                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Published
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700">MMA</span>
+                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Published
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700">Sports</span>
+                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Published
+                </span>
               </div>
             </div>
           </div>

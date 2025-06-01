@@ -1,17 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '../components/ui/Container';
 import PostCard from '../components/blog/PostCard';
 import CategoryList from '../components/blog/CategoryList';
 import TagCloud from '../components/blog/TagCloud';
 import { Search } from 'lucide-react';
-import { posts, getAllCategories, getAllTags } from '../data/posts';
-import { Post } from '../types';
+import { getAllCategories, getAllTags } from '../data/posts';
 import { Helmet } from 'react-helmet-async';
+import { Query } from 'appwrite';
+import { databases } from '../AppwriteConfig'
 
 export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const categories = getAllCategories();
   const tags = getAllTags();
+
+  const [ posts, setPost] = useState([])
+
+  useEffect(() => {
+    const getBlog = async () => {
+      try {
+        const response = await databases.listDocuments(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
+          [
+            Query.orderDesc('publishedAt'),
+            Query.limit(9)
+          ]
+        );
+        setPost(response.documents); // Returns an array of documents
+      } catch (error) {
+        console.error("Error fetching collection:", error);
+      }
+    }
+    getBlog();
+  }, []);
   
   // Filter posts based on search query
   const filteredPosts = posts.filter((post) => {
@@ -23,8 +45,7 @@ export default function BlogPage() {
       post.excerpt.toLowerCase().includes(query) ||
       post.content.toLowerCase().includes(query) ||
       post.category.toLowerCase().includes(query) ||
-      post.tags.some(tag => tag.toLowerCase().includes(query)) ||
-      post.author.name.toLowerCase().includes(query)
+      post.tags.some(tag => tag.toLowerCase().includes(query))
     );
   });
   
@@ -76,7 +97,7 @@ export default function BlogPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {filteredPosts.map((post) => (
-                  <PostCard key={post.id} post={post} />
+                  <PostCard key={post.$id} post={post} />
                 ))}
               </div>
             </div>

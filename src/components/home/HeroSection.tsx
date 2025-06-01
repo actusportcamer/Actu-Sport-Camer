@@ -25,7 +25,7 @@ export default function HeroSection() {
             Your front-row seat to the latest news in sports
             </h1>
             <p className="mt-6 text-md text-gray-800 leading-relaxed">
-            news, insights, and stories that move the game forward so stay tune and get info
+            news, insights, and stories that move the game forward so stay tune and get informed
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link to="/blog">
@@ -34,7 +34,7 @@ export default function HeroSection() {
                   <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>
-              <Link className='sm:inline hidden' to="/category/react">
+              <Link className='sm:inline hidden' to="/category/Football">
                 <Button variant="outline" size="md">
                   Browse Categories
                 </Button>

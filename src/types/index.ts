@@ -20,7 +20,5 @@ export interface Author {
 }
 
 export interface Category {
-  id: string;
   name: string;
-  slug: string;
 }

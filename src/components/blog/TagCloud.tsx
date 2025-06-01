@@ -12,7 +12,7 @@ export default function TagCloud({ tags, className = '' }: TagCloudProps) {
       {tags.map((tag) => (
         <Link
           key={tag}
-          to={`/tag/${tag.toLowerCase().replace(/\s+/g, '-')}`}
+          to={`/tag/${tag}`}
           className="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-xs font-medium text-gray-700 transition-colors"
         >
           {tag}

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Clock } from 'lucide-react';
 import { Post } from '../../types';
@@ -18,7 +17,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
   
   return (
     <Card 
-      href={`/blog/${post.slug}`} 
+      href={`/blog/${post.$id}`} 
       className={`h-full flex flex-col transition-transform duration-300 ${
         featured ? 'hover:-translate-y-2' : 'hover:-translate-y-1'
       }`}
@@ -27,7 +26,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
       <CardHeader className={featured ? 'pt-6' : 'pt-5'}>
         <div className="flex items-center text-xs text-gray-500 mb-2 space-x-2">
           <Link 
-            to={`/category/${post.category.toLowerCase()}`} 
+            to={`/category/${post.category}`} 
             className="px-2.5 py-0.5 bg-blue-50 text-blue-700 rounded-full hover:bg-blue-100 transition-colors"
             onClick={(e) => e.stopPropagation()}
           >

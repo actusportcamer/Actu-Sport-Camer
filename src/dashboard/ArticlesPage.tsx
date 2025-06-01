@@ -1,17 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { PlusCircle, Search, Edit2, Trash2, Eye } from 'lucide-react';
 import Button from '../components/ui/Button';
-import { posts } from '../data/posts';
+import { Query } from 'appwrite';
+import { databases } from '../AppwriteConfig'
+import { Modal } from '../components/Modal';
+import { toast } from 'react-toastify';
 
 export default function ArticlesPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [deleteblogId, setDeleteblogId] = useState()
+  const [ blogs, setBlog] = useState([])
+
+  useEffect(() => {
+    const getBlog = async () => {
+      try {
+        const response = await databases.listDocuments(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
+          [
+            Query.orderDesc('publishedAt')
+          ]
+        );
+        setBlog(response.documents); // Returns an array of documents
+      } catch (error) {
+        console.error("Error fetching collection:", error);
+      }
+    }
+    getBlog();
+  }, []);
   
-  const filteredPosts = posts.filter(post => 
+  const filteredPosts = blogs.filter(post => 
     post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleNo = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleYes = async () => {
+    try {
+      await databases.deleteDocument(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
+        deleteblogId // The document ID to delete
+      );
+      setBlog((recent) =>
+        recent.filter((blog) => blog.$id !== deleteblogId))
+      setIsModalOpen(false)
+    } catch (error) {
+      toast.error("Error deleting document:", error);
+    }
+  }
   
   return (
     <>
@@ -50,7 +94,6 @@ export default function ArticlesPage() {
                 <tr className="bg-gray-50">
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Published</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -77,18 +120,6 @@ export default function ArticlesPage() {
                         {post.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center">
-                        <img
-                          src={post.author.avatar}
-                          alt={post.author.name}
-                          className="h-8 w-8 rounded-full"
-                        />
-                        <div className="ml-3">
-                          <div className="text-sm font-medium text-gray-900">{post.author.name}</div>
-                        </div>
-                      </div>
-                    </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       {new Date(post.publishedAt).toLocaleDateString()}
                     </td>
@@ -98,14 +129,17 @@ export default function ArticlesPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right space-x-2">
-                      <button className="text-gray-400 hover:text-blue-600">
-                        <Eye size={18} />
-                      </button>
                       <button className="text-gray-400 hover:text-yellow-600">
-                        <Edit2 size={18} />
+                        <Link to={`/dashboard/edit/${post.$id}`}>
+                           <Edit2 size={18} />
+                        </Link>
                       </button>
                       <button className="text-gray-400 hover:text-red-600">
-                        <Trash2 size={18} />
+                        <Trash2  
+                        onClick={() => {
+                          setIsModalOpen(true) 
+                          setDeleteblogId(post?.$id)
+                          }} size={18} />
                       </button>
                     </td>
                   </tr>
@@ -114,6 +148,13 @@ export default function ArticlesPage() {
             </table>
           </div>
         </div>
+        <Modal
+        isOpen={isModalOpen}
+        title="Confirm Action"
+        message="Do you agree to proceed with this action?"
+        onYes={handleYes}
+        onNo={handleNo}
+      />
       </div>
     </>
   );

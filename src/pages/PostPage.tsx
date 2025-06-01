@@ -1,32 +1,90 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Calendar, Clock, ChevronLeft, Share2 } from 'lucide-react';
+import { Calendar, Clock, ChevronLeft, Share2, FacebookIcon, Facebook, Eye } from 'lucide-react';
 import Container from '../components/ui/Container';
 import Button from '../components/ui/Button';
 import TagCloud from '../components/blog/TagCloud';
 import RecentPostsSection from '../components/blog/RecentPostsSection';
 import { getPost, getRelatedPosts } from '../data/posts';
+import { databases } from '../AppwriteConfig'
+import { Query } from 'appwrite';
+import logo from '../img/logo.png'
 
 export default function PostPage() {
-  const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  
-  const post = getPost(slug || '');
-  
+  const { id } = useParams();
+  const [post, setPost] = useState(null)
+  const [recentblogs, setRecentBlog] = useState([])
+
   useEffect(() => {
-    // Scroll to top when post changes
-    window.scrollTo(0, 0);
-    
-    // Redirect to blog page if post not found
-    if (!post && slug) {
-      navigate('/blog', { replace: true });
+    const getBlog = async () => {
+      try {
+        const response = await databases.getDocument(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
+        id
+        );
+        setPost(response); // Returns an array of documents
+      } catch (error) {
+        console.error("Error fetching collection:", error);
+      }
     }
-  }, [post, slug, navigate]);
+    getBlog();
+  }, [id]);
+
+  const incrementViewCount = async (id) => {
+    try {
+      // First get current view count
+      const blog = await databases.getDocument(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
+        id);
+      const currentViews = blog.view || 0;
+  
+      // Update with +1
+      await databases.updateDocument(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '68379fa2002f31d6d937',
+        id, {
+        view: currentViews + 1,
+      });
+    } catch (error) {
+      console.error("Error incrementing view count:", error);
+    }
+  };
+
+  useEffect(() => {
+    incrementViewCount(id); // call this once when the page is loaded
+  }, [id]);
+
+  useEffect(() => {
+    const getBlog = async () => {
+      try {
+        const res = await databases.listDocuments(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
+          [
+            Query.limit(6)
+          ]
+        )
+
+          if (res.total > 0) {
+            const docs = res.documents;
+            const randomDoc = docs[Math.floor(Math.random() * docs.length)];
+            return randomDoc;
+          }
+
+        setRecentBlog(res.documents); // Returns an array of documents
+      } catch (error) {
+        console.error("Error fetching collection:", error);
+      }
+    }
+    getBlog();
+  }, []);
+  
   
   if (!post) return null;
   
-  const relatedPosts = getRelatedPosts(post.id, 3);
   const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -51,11 +109,11 @@ export default function PostPage() {
   return (
     <>
       <Helmet>
-        <title>{post.title} | InsightBlog</title>
+        <title>{post.title} | Actu Sport Camer</title>
         <meta name="description" content={post.excerpt} />
       </Helmet>
       
-      <article className="pt-8 pb-16">
+      <article className="pt-8 pb-16 max-w-7xl">
         <Container size="md">
           <div className="mb-8">
             <Link to="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors mb-4">
@@ -76,7 +134,7 @@ export default function PostPage() {
               </div>
               <div className="flex items-center">
                 <Clock size={14} className="mr-1" />
-                <span>{post.readTime} min read</span>
+                <span>{post.readTime}</span>
               </div>
             </div>
             
@@ -85,17 +143,11 @@ export default function PostPage() {
             </h1>
             
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <img 
-                  src={post.author.avatar} 
-                  alt={post.author.name} 
-                  className="w-10 h-10 rounded-full mr-3 object-cover" 
-                />
-                <div>
-                  <p className="font-medium text-gray-900">{post.author.name}</p>
-                </div>
+              <div className='flex items-center justify-center gap-1'>
+                <img src={logo} width={40} />
+                <h1 className='font-bold text-md'>Actu Sport Camer</h1>
               </div>
-              
+              <div className=''>
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -105,16 +157,33 @@ export default function PostPage() {
                 <Share2 size={16} className="mr-2" />
                 Share
               </Button>
+              </div>            
+            </div>
+            <div className='flex  mt-4 mb-[-15px] items-center justify-between'>
+              <span className='flex gap-6'>
+                  <img src='https://www.facebook.com/images/fb_icon_325x325.png' width={20} />
+                  <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png' width={20} />
+                  <img src='https://upload.wikimedia.org/wikipedia/commons/b/b7/X_logo.jpg' className='rounded-md' width={20} />
+                  <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Threads_%28app%29.svg/1200px-Threads_%28app%29.svg.png' className='rounded-md' width={20} />
+              </span>
+              <div className="flex justify-center items-center">
+                <Eye size={14} className="mr-1" />
+                <span>{post.view}</span>
+              </div>
             </div>
           </div>
           
-          <div className="relative rounded-xl overflow-hidden mb-10 aspect-video">
+          <div className="relative rounded-xl overflow-hidden mb-10">
             <img 
               src={post.coverImage} 
               alt={post.title} 
-              className="w-full h-full object-cover" 
+              className="h-auto w-full" 
             />
           </div>
+
+            <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-900 leading-tight mb-4">
+              {post.excerpt}
+            </h1>
           
           <div className="prose prose-lg max-w-none">
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
@@ -138,40 +207,18 @@ export default function PostPage() {
               </Button>
             </div>
           </div>
-          
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center bg-gray-50 rounded-lg p-6">
-              <img 
-                src={post.author.avatar} 
-                alt={post.author.name} 
-                className="w-16 h-16 rounded-full mb-4 sm:mb-0 sm:mr-6 object-cover" 
-              />
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{post.author.name}</h3>
-                <p className="text-gray-600 mb-4">{post.author.bio}</p>
-                <div className="flex space-x-3">
-                  <Button variant="outline" size="sm">
-                    View Profile
-                  </Button>
-                  <Button variant="primary" size="sm">
-                    Follow
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
         </Container>
       </article>
       
-      {relatedPosts.length > 0 && (
+      {recentblogs.length > 0 && (
         <section className="py-16 bg-gray-50">
           <Container>
             <h2 className="text-2xl font-bold text-gray-900 mb-8">Related Articles</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {relatedPosts.map((post) => (
+              {recentblogs.map((post) => (
                 <Link
                   key={post.id}
-                  to={`/blog/${post.slug}`}
+                  to={`/blog/${post.$id}`}
                   className="group"
                 >
                   <div className="bg-white rounded-lg shadow-sm overflow-hidden transition-shadow hover:shadow-md h-full flex flex-col">
@@ -200,7 +247,7 @@ export default function PostPage() {
         </section>
       )}
       
-      <RecentPostsSection title="You May Also Enjoy" posts={getRelatedPosts(post.id, 6)} />
+      <RecentPostsSection title="You May Also Enjoy" />
     </>
   );
 }

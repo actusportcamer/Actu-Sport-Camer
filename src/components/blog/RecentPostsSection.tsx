@@ -1,14 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '../ui/Container';
 import PostCard from './PostCard';
 import { Post } from '../../types';
+import { databases } from '../../AppwriteConfig'
+import { Query } from 'appwrite';
 
 interface RecentPostsSectionProps {
-  posts: Post[];
   title?: string;
 }
 
-export default function RecentPostsSection({ posts, title = "Recent Articles" }: RecentPostsSectionProps) {
+export default function RecentPostsSection({ title = "Recent Articles" }: RecentPostsSectionProps) {
+
+  const [posts, setPosts] = useState([])
+
+  useEffect(() => {
+    const getBlog = async () => {
+      try {
+        const res = await databases.listDocuments(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
+          [
+            Query.limit(3)
+          ]
+        )
+        setPosts(res.documents); // Returns an array of documents
+      } catch (error) {
+        console.error("Error fetching collection:", error);
+      }
+    }
+    getBlog();
+  }, []);
+  
   return (
     <section className="py-16">
       <Container>
@@ -16,7 +38,7 @@ export default function RecentPostsSection({ posts, title = "Recent Articles" }:
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
+            <PostCard key={post.$id} post={post} />
           ))}
         </div>
       </Container>

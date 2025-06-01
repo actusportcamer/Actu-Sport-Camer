@@ -1,4 +1,5 @@
 import { Post } from '../types';
+import { Category } from '../types';
 
 export const posts: Post[] = [
   {
@@ -207,6 +208,71 @@ export const posts: Post[] = [
   }
 ];
 
+export const categories: Category[] = [
+  { name: 'Football' },
+  { name: "Basketball" },
+  { name: "Tennis" },
+  { name: "Cycling" },
+  { name: "Volleyball" },
+  { name: "MMA" },
+  { name: "Sports" }
+]
+
+export type Tag = string;
+
+// Export the tag array with valid string values
+export const tags: string[] = [
+  "sports",
+  "athletics",
+  "fitness",
+  "health",
+  "training",
+  "competition",
+  "performance",
+  "teamwork",
+  "sports-news",
+  "football",
+  "champion",
+  "league",
+  "soccer",
+  "basketball",
+  "baseball",
+  "tennis",
+  "cricket",
+  "golf",
+  "boxing",
+  "mma",
+  "rugby",
+  "swimming",
+  "esports",
+  "olympics",
+  "world-cup",
+  "champions-league",
+  "premier-league",
+  "nba",
+  "nfl",
+  "ufc",
+  "wimbledon",
+  "super-bowl",
+  "game-analysis",
+  "player-profile",
+  "match-recap",
+  "injury-report",
+  "transfer-news",
+  "behind-the-scenes",
+  "fan-opinion",
+  "sports-tech",
+  "fantasy-sports",
+  "betting",
+  "youth-sports",
+  "women-in-sports",
+  "african-football",
+  "european-leagues",
+  "american-sports",
+  "local-heroes"
+];
+
+
 export const getPost = (slug: string): Post | undefined => {
   return posts.find(post => post.slug === slug);
 };
@@ -244,29 +310,9 @@ export const getPostsByTag = (tag: string): Post[] => {
 };
 
 export const getAllCategories = (): Category[] => {
-  const categories = new Map<string, Category>();
-  
-  posts.forEach(post => {
-    if (!categories.has(post.category.toLowerCase())) {
-      categories.set(post.category.toLowerCase(), {
-        id: post.category.toLowerCase(),
-        name: post.category,
-        slug: post.category.toLowerCase().replace(/\s+/g, '-')
-      });
-    }
-  });
-  
-  return Array.from(categories.values());
+  return categories
 };
 
-export const getAllTags = (): string[] => {
-  const tags = new Set<string>();
-  
-  posts.forEach(post => {
-    post.tags.forEach(tag => {
-      tags.add(tag);
-    });
-  });
-  
-  return Array.from(tags);
+export const getAllTags = (): Tag[] => {
+  return tags;
 };

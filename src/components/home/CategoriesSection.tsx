@@ -4,18 +4,16 @@ import Container from '../ui/Container';
 import { Category } from '../../types';
 import { Code, PenTool, Cpu, Database, Layers, BarChart } from 'lucide-react';
 
-interface CategoriesSectionProps {
-  categories: Category[];
-}
 
 // Map category names to icons
 const categoryIcons: Record<string, React.ReactNode> = {
-  'Technology': <Cpu className="h-6 w-6" />,
-  'CSS': <PenTool className="h-6 w-6" />,
-  'React': <Code className="h-6 w-6" />,
-  'Design': <Layers className="h-6 w-6" />,
-  'CMS': <Database className="h-6 w-6" />,
-  'Typography': <BarChart className="h-6 w-6" />,
+  'Football': <Cpu className="h-6 w-6" />,
+  "Basketball": <PenTool className="h-6 w-6" />,
+  "Tennis": <Code className="h-6 w-6" />,
+  "Cycling": <Layers className="h-6 w-6" />,
+  "Volleyball": <Database className="h-6 w-6" />,
+  "MMA": <BarChart className="h-6 w-6" />,
+  "Sports": <BarChart className="h-6 w-6" />
 };
 
 // Get icon for a category or default to Code icon
@@ -23,7 +21,7 @@ const getCategoryIcon = (categoryName: string) => {
   return categoryIcons[categoryName] || <Code className="h-6 w-6" />;
 };
 
-export default function CategoriesSection({ categories }: CategoriesSectionProps) {
+export default function CategoriesSection({ categories }) {
   return (
     <section className="py-16">
       <Container>
@@ -33,7 +31,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
           {categories.map((category) => (
             <Link
               key={category.id}
-              to={`/category/${category.slug}`}
+              to={`/category/${category.name}`}
               className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow group"
             >
               <div className="flex items-center">
