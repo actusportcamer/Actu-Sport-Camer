@@ -162,16 +162,16 @@ export default function PostPage() {
             <div className='flex  mt-4 mb-[-15px] items-center justify-between'>
               <span className='flex gap-6'>
                   <a href='https://www.facebook.com/share/1HJLLwrwrF/?mibextid=wwXIfr' target="_blank" rel="noopener noreferrer">
-                    <img src='https://www.facebook.com/images/fb_icon_325x325.png' width={20} />
+                    <img src='https://www.facebook.com/images/fb_icon_325x325.png' width={30} />
                   </a>
                   <a href='https://www.instagram.com/actu_sport_camer/profilecard/?igsh=ajVyYXd5Zzc0aTB4' target="_blank" rel="noopener noreferrer">
-                    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png' width={20} />
+                    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png' width={30} />
                   </a>
                   <a href='https://x.com/actusportcamer?s=21' target="_blank" rel="noopener noreferrer">
-                    <img src='https://upload.wikimedia.org/wikipedia/commons/b/b7/X_logo.jpg' className='rounded-md' width={20} />
+                    <img src='https://upload.wikimedia.org/wikipedia/commons/b/b7/X_logo.jpg' className='rounded-md' width={30} />
                   </a>
                   <a href='https://www.threads.com/@actu_sport_camer?igshid=NTc4MTIwNjQ2YQ==' target="_blank" rel="noopener noreferrer">
-                    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Threads_%28app%29.svg/1200px-Threads_%28app%29.svg.png' className='rounded-md' width={20} />
+                    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Threads_%28app%29.svg/1200px-Threads_%28app%29.svg.png' className='rounded-md' width={30} />
                   </a>
               </span>
               <div className="flex justify-center items-center">
