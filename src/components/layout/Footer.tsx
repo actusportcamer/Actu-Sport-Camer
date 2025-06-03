@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Container from '../ui/Container';
-import { Mail, Twitter, Linkedin } from 'lucide-react';
+import { Mail, Twitter, Linkedin, X } from 'lucide-react';
 import Button from '../ui/Button';
 import logo from '../../img/logo.png'
 import LoginModal from '../LoginModal';
@@ -67,20 +67,6 @@ export default function Footer() {
             <p className="mt-4 text-gray-300 max-w-md">
             Covering the plays, the players, and the platforms transforming the sports world, Unpacking the game beyond the field—where sports meet innovation, design, and digital culture.
             </p>
-            <div className="flex space-x-4 mt-6">
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                <Twitter size={20} />
-                <span className="sr-only">Twitter</span>
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                <Linkedin size={20} />
-                <span className="sr-only">LinkedIn</span>
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                <Mail size={20} />
-                <span className="sr-only">Email</span>
-              </a>
-            </div>
           </div>
           
           <div>
