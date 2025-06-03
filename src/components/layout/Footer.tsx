@@ -5,10 +5,54 @@ import { Mail, Twitter, Linkedin } from 'lucide-react';
 import Button from '../ui/Button';
 import logo from '../../img/logo.png'
 import LoginModal from '../LoginModal';
+import { ID, Query } from 'appwrite';
+import { databases } from '../../AppwriteConfig'
+import { toast, ToastContainer } from 'react-toastify';
 
 export default function Footer() {
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  const [email, setEmail] = useState('');
+   
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const result = await databases.listDocuments(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '683bea08002981a5a5e3',     // Replace with your Appwrite collection ID
+        [Query.equal('email', email)]
+      );
+
+      if (result.total > 0) {
+        for (const doc of result.documents) {
+          await databases.deleteDocument(
+          '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+          '683bea08002981a5a5e3',
+          doc.$id)     // Replace with your Appwrite collection ID, doc.$id);
+          toast.error('Subscription Email deleted')
+        }
+        return
+      }
+      
+      const response = await databases.createDocument(
+        '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
+        '683bea08002981a5a5e3',     // Replace with your Appwrite collection ID
+        ID.unique(),
+        {
+          email: email,
+        });
+
+      if (response) {
+        toast.success('Subscription successfully!');
+      } else {
+        toast.error('Subscription Failed');
+      }
+    } catch (error) {
+      toast.error('Failed to Subscription');
+    }
+  };
 
   return (
     <footer className="bg-gray-900 text-white py-12">
@@ -55,10 +99,12 @@ export default function Footer() {
             <p className="text-gray-300 mb-4">
               Stay updated with our latest articles and news.
             </p>
-            <form className="space-y-2">
+            <form onSubmit={handleSubmit} className="space-y-2">
               <input
                 type="email"
                 placeholder="Your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 rounded-md bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />

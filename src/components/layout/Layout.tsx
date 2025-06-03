@@ -2,10 +2,12 @@ import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import { Outlet } from 'react-router-dom';
+import pow from '../../img/powered.png'
 
 export default function Layout() {
   return (
     <div className="flex flex-col min-h-screen">
+      <img src={pow} className='sm:hidden inline h-36' />
       <Header />
       <main className="flex-grow">
         <Outlet />
