@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vercel/speed-insights": "^1.2.0",
     "appwrite": "^18.1.1",
     "lucide-react": "^0.344.0",
     "moment": "^2.30.1",

@@ -1,8 +1,9 @@
-import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import { Outlet } from 'react-router-dom';
 import pow from '../../img/powered.png'
+import VideoPopup from '../VideoPopup';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function Layout() {
   return (
@@ -13,6 +14,8 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <VideoPopup />
+      <SpeedInsights />
     </div>
   );
 }
