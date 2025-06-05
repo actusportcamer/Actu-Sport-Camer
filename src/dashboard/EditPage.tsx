@@ -122,6 +122,9 @@ export default function EditPage() {
         title: blogdetail.title,
         excerpt: blogdetail.excerpt,
         content: blogdetail.content,
+        f_title: blogdetail.f_title,
+        f_excerpt: blogdetail.f_excerpt,
+        f_content: blogdetail.f_content,
         category: blogdetail.category,
         tags: blogdetail.tags,
         coverImage: img || blogdetail.img
@@ -241,6 +244,54 @@ export default function EditPage() {
               </div>
             </div>
           </div>
+
+         <div className='bg-white rounded-lg shadow-sm border border-gray-100 p-6'>
+          <div className="space-y-4">
+              <div>
+                <label htmlFor="f_title" className="block text-sm font-medium text-gray-700 mb-1">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  name='f_title'
+                  value={blogdetail.f_title}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter article title"
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="f_excerpt" className="block text-sm font-medium text-gray-700 mb-1">
+                  Excerpt
+                </label>
+                <textarea
+                   id="f_excerpt"
+                  name="f_excerpt"
+                  value={blogdetail.f_excerpt}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Brief description of the article"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
+                  Content
+                </label>
+                <ReactQuill
+                  id="content"
+                  value={blogdetail.f_content}
+                  onChange={(value) =>
+                    setBlogdetail((prev) => ({ ...prev, f_content: value }))
+                  }
+                  className="w-full h-auto border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Write your article content here..."
+                />
+              </div>
+          </div>
+         </div>
 
           <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Article Settings</h2>

@@ -10,11 +10,13 @@ import { getPost, getRelatedPosts } from '../data/posts';
 import { databases } from '../AppwriteConfig'
 import { Query } from 'appwrite';
 import logo from '../img/logo.png'
+import DOMPurify from 'dompurify';
 
 export default function PostPage() {
   const { id } = useParams();
   const [post, setPost] = useState(null)
   const [recentblogs, setRecentBlog] = useState([])
+  const [textblog, setTextBlog] = useState('english')
 
   useEffect(() => {
     const getBlog = async () => {
@@ -114,108 +116,239 @@ export default function PostPage() {
       </Helmet>
       
       <article className="pt-8 pb-16 max-w-7xl">
-        <Container size="md">
-          <div className="mb-8">
-            <Link to="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors mb-4">
-              <ChevronLeft size={16} className="mr-1" />
-              Back to all articles
-            </Link>
-            
-            <div className="flex items-center text-sm text-gray-500 mb-4 space-x-4">
-              <Link 
-                to={`/category/${post.category.toLowerCase().replace(/\s+/g, '-')}`} 
-                className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full hover:bg-blue-100 transition-colors"
-              >
-                {post.category}
-              </Link>
-              <div className="flex items-center">
-                <Calendar size={14} className="mr-1" />
-                <span>{formattedDate}</span>
-              </div>
-              <div className="flex items-center">
-                <Clock size={14} className="mr-1" />
-                <span>{post.readTime}</span>
-              </div>
-            </div>
-            
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4">
-              {post.title}
-            </h1>
-            
-            <div className="flex items-center justify-between">
-              <div className='flex items-center justify-center gap-1'>
-                <img src={logo} width={40} />
-                <h1 className='font-bold text-md'>Actu Sport Camer</h1>
-              </div>
-              <div className=''>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={sharePost}
-                className="flex items-center"
-              >
-                <Share2 size={16} className="mr-2" />
-                Share
-              </Button>
-              </div>            
-            </div>
-            <div className='flex  mt-4 mb-[-15px] items-center justify-between'>
-              <span className='flex gap-6'>
-                  <a href='https://www.facebook.com/share/1HJLLwrwrF/?mibextid=wwXIfr' target="_blank" rel="noopener noreferrer">
-                    <img src='https://www.facebook.com/images/fb_icon_325x325.png' width={30} />
-                  </a>
-                  <a href='https://www.instagram.com/actu_sport_camer/profilecard/?igsh=ajVyYXd5Zzc0aTB4' target="_blank" rel="noopener noreferrer">
-                    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png' width={30} />
-                  </a>
-                  <a href='https://x.com/actusportcamer?s=21' target="_blank" rel="noopener noreferrer">
-                    <img src='https://upload.wikimedia.org/wikipedia/commons/b/b7/X_logo.jpg' className='rounded-md' width={30} />
-                  </a>
-                  <a href='https://www.threads.com/@actu_sport_camer?igshid=NTc4MTIwNjQ2YQ==' target="_blank" rel="noopener noreferrer">
-                    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Threads_%28app%29.svg/1200px-Threads_%28app%29.svg.png' className='rounded-md' width={30} />
-                  </a>
-              </span>
-              <div className="flex justify-center items-center">
-                <Eye size={14} className="mr-1" />
-                <span>{post.view}</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="relative rounded-xl overflow-hidden mb-10">
-            <img 
-              src={post.coverImage} 
-              alt={post.title} 
-              className="h-auto w-full" 
-            />
-          </div>
-
-            <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-900 leading-tight mb-4">
-              {post.excerpt}
-            </h1>
-          
-          <div className="prose prose-lg max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
-          </div>
-          
-          <div className="mt-12 pt-6 border-t border-gray-200">
-            <div className="flex flex-wrap justify-between items-center">
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Tags:</h3>
-                <TagCloud tags={post.tags} />
+      <div className="max-w-[225px] mx-auto p-4">
+    <div className="flex justify-between bg-white shadow-md rounded-md overflow-hidden">
+      <div
+        onClick={() => setTextBlog('english')}
+        className={`px-6 py-2 text-sm font-medium cursor-pointer transition-all duration-300 ${
+          textblog === 'english'
+            ? 'bg-blue-500 text-white scale-105 font-semibold'
+            : 'text-gray-600 hover:bg-gray-100'
+        }`}
+      >
+        English
+      </div>
+      <div
+        onClick={() => setTextBlog('french')}
+        className={`px-6 py-2 text-sm font-medium cursor-pointer transition-all duration-300 ${
+          textblog === 'french'
+            ? 'bg-green-500 text-white scale-105 font-semibold'
+            : 'text-gray-600 hover:bg-gray-100'
+        }`}
+      >
+        French
+      </div>
+    </div>
+   </div>
+          {
+            textblog === 'english' ? (
+            <Container size="md">
+              <div className="mb-8">
+                <Link to="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors mb-4">
+                  <ChevronLeft size={16} className="mr-1" />
+                  Back to all articles
+                </Link>
+                
+                <div className="flex items-center text-sm text-gray-500 mb-4 space-x-4">
+                  <Link 
+                    to={`/category/${post.category.toLowerCase().replace(/\s+/g, '-')}`} 
+                    className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full hover:bg-blue-100 transition-colors"
+                  >
+                    {post.category}
+                  </Link>
+                  <div className="flex items-center">
+                    <Calendar size={14} className="mr-1" />
+                    <span>{formattedDate}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Clock size={14} className="mr-1" />
+                    <span>{post.readTime}</span>
+                  </div>
+                </div>
+                
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4">
+                  {post.title}
+                </h1>
+                
+                <div className="flex items-center justify-between">
+                  <div className='flex items-center justify-center gap-1'>
+                    <img src={logo} width={40} />
+                    <h1 className='font-bold text-md'>Actu Sport Camer</h1>
+                  </div>
+                  <div className=''>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={sharePost}
+                    className="flex items-center"
+                  >
+                    <Share2 size={16} className="mr-2" />
+                    Share
+                  </Button>
+                  </div>            
+                </div>
+                <div className='flex  mt-4 mb-[-15px] items-center justify-between'>
+                  <span className='flex gap-6'>
+                      <a href='https://www.facebook.com/share/1HJLLwrwrF/?mibextid=wwXIfr' target="_blank" rel="noopener noreferrer">
+                        <img src='https://www.facebook.com/images/fb_icon_325x325.png' width={30} />
+                      </a>
+                      <a href='https://www.instagram.com/actu_sport_camer/profilecard/?igsh=ajVyYXd5Zzc0aTB4' target="_blank" rel="noopener noreferrer">
+                        <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png' width={30} />
+                      </a>
+                      <a href='https://x.com/actusportcamer?s=21' target="_blank" rel="noopener noreferrer">
+                        <img src='https://upload.wikimedia.org/wikipedia/commons/b/b7/X_logo.jpg' className='rounded-md' width={30} />
+                      </a>
+                      <a href='https://www.threads.com/@actu_sport_camer?igshid=NTc4MTIwNjQ2YQ==' target="_blank" rel="noopener noreferrer">
+                        <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Threads_%28app%29.svg/1200px-Threads_%28app%29.svg.png' className='rounded-md' width={30} />
+                      </a>
+                  </span>
+                  <div className="flex justify-center items-center">
+                    <Eye size={14} className="mr-1" />
+                    <span>{post.view}</span>
+                  </div>
+                </div>
               </div>
               
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={sharePost}
-                className="mt-4 sm:mt-0 flex items-center"
-              >
-                <Share2 size={16} className="mr-2" />
-                Share This Article
-              </Button>
-            </div>
-          </div>
-        </Container>
+              <div className="relative rounded-xl overflow-hidden mb-10">
+                <img 
+                  src={post.coverImage} 
+                  alt={post.title} 
+                  className="h-auto w-full" 
+                />
+              </div>
+
+                <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-900 leading-tight mb-4">
+                  {post.excerpt}
+                </h1>
+              
+              <div className="prose prose-lg max-w-none">
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
+              </div>
+              
+              <div className="mt-12 pt-6 border-t border-gray-200">
+                <div className="flex flex-wrap justify-between items-center">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">Tags:</h3>
+                    <TagCloud tags={post.tags} />
+                  </div>
+                  
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={sharePost}
+                    className="mt-4 sm:mt-0 flex items-center"
+                  >
+                    <Share2 size={16} className="mr-2" />
+                    Share This Article
+                  </Button>
+                </div>
+              </div>
+            </Container>
+            ) : (
+              <Container size="md">
+              <div className="mb-8">
+                <Link to="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors mb-4">
+                  <ChevronLeft size={16} className="mr-1" />
+                  Back to all articles
+                </Link>
+                
+                <div className="flex items-center text-sm text-gray-500 mb-4 space-x-4">
+                  <Link 
+                    to={`/category/${post.category.toLowerCase().replace(/\s+/g, '-')}`} 
+                    className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full hover:bg-blue-100 transition-colors"
+                  >
+                    {post.category}
+                  </Link>
+                  <div className="flex items-center">
+                    <Calendar size={14} className="mr-1" />
+                    <span>{formattedDate}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Clock size={14} className="mr-1" />
+                    <span>{post.readTime}</span>
+                  </div>
+                </div>
+                
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4">
+                  {post.f_title}
+                </h1>
+                
+                <div className="flex items-center justify-between">
+                  <div className='flex items-center justify-center gap-1'>
+                    <img src={logo} width={40} />
+                    <h1 className='font-bold text-md'>Actu Sport Camer</h1>
+                  </div>
+                  <div className=''>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={sharePost}
+                    className="flex items-center"
+                  >
+                    <Share2 size={16} className="mr-2" />
+                    Share
+                  </Button>
+                  </div>            
+                </div>
+                <div className='flex  mt-4 mb-[-15px] items-center justify-between'>
+                  <span className='flex gap-6'>
+                      <a href='https://www.facebook.com/share/1HJLLwrwrF/?mibextid=wwXIfr' target="_blank" rel="noopener noreferrer">
+                        <img src='https://www.facebook.com/images/fb_icon_325x325.png' width={30} />
+                      </a>
+                      <a href='https://www.instagram.com/actu_sport_camer/profilecard/?igsh=ajVyYXd5Zzc0aTB4' target="_blank" rel="noopener noreferrer">
+                        <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png' width={30} />
+                      </a>
+                      <a href='https://x.com/actusportcamer?s=21' target="_blank" rel="noopener noreferrer">
+                        <img src='https://upload.wikimedia.org/wikipedia/commons/b/b7/X_logo.jpg' className='rounded-md' width={30} />
+                      </a>
+                      <a href='https://www.threads.com/@actu_sport_camer?igshid=NTc4MTIwNjQ2YQ==' target="_blank" rel="noopener noreferrer">
+                        <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Threads_%28app%29.svg/1200px-Threads_%28app%29.svg.png' className='rounded-md' width={30} />
+                      </a>
+                  </span>
+                  <div className="flex justify-center items-center">
+                    <Eye size={14} className="mr-1" />
+                    <span>{post.view}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="relative rounded-xl overflow-hidden mb-10">
+                <img 
+                  src={post.coverImage} 
+                  alt={post._title} 
+                  className="h-auto w-full" 
+                />
+              </div>
+
+                <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-900 leading-tight mb-4">
+                  {post.f_excerpt}
+                </h1>
+              
+              <div className="prose prose-lg max-w-none">
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.f_content) }} />
+              </div>
+              
+              <div className="mt-12 pt-6 border-t border-gray-200">
+                <div className="flex flex-wrap justify-between items-center">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">Tags:</h3>
+                    <TagCloud tags={post.tags} />
+                  </div>
+                  
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={sharePost}
+                    className="mt-4 sm:mt-0 flex items-center"
+                  >
+                    <Share2 size={16} className="mr-2" />
+                    Share This Article
+                  </Button>
+                </div>
+              </div>
+            </Container>
+            )
+          }
       </article>
       
       {recentblogs.length > 0 && (

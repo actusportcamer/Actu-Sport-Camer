@@ -15,6 +15,9 @@ export default function NewArticlePage() {
     title: '',
     excerpt: '',
     content: '',
+    f_title: '',
+    f_excerpt: '',
+    f_content: '',
     category: '',
     tags: [] as string[],
     publishedAt: new Date().toISOString()
@@ -130,7 +133,7 @@ export default function NewArticlePage() {
   return (
     <>
       <Helmet>
-        <title>New Article | InsightBlog</title>
+        <title>New Article | Actu Sport Camer</title>
       </Helmet>
 
       <div>
@@ -245,6 +248,56 @@ export default function NewArticlePage() {
                         <img src={img} width={200} />
                      )}
 
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="f_title" className="block text-sm font-medium text-gray-700 mb-1">
+                  French Title
+                </label>
+                <input
+                  type="text"
+                  id="f_title"
+                  name="f_title"
+                  value={formData.f_title}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter article title"
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="f_excerpt" className="block text-sm font-medium text-gray-700 mb-1">
+                  French Excerpt
+                </label>
+                <textarea
+                  id="f_excerpt"
+                  name="f_excerpt"
+                  value={formData.f_excerpt}
+                  onChange={handleChange}
+                  rows={3}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Brief description of the article"
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="f_content" className="block text-sm font-medium text-gray-700 mb-1">
+                  French Content
+                </label>
+                <ReactQuill
+                  id="f_content"
+                  value={formData.f_content}
+                  onChange={(value) =>
+                    setFormData((prev) => ({ ...prev, f_content: value }))
+                  }
+                  className="w-full h-auto border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Write your article content here..."
+                  required
+                />
               </div>
             </div>
 
