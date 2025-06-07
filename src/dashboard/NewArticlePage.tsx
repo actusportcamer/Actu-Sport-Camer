@@ -25,7 +25,7 @@ export default function NewArticlePage() {
   const [img, setImg] = useState(null)
   const navigate = useNavigate()
 
-  function calculateReadTime(text: string, wordsPerMinute: number = 200): string {
+  function calculateReadTime(text: string, wordsPerMinute: number = 50): string {
     const words = text.trim().split(/\s+/).length;
     const minutes = Math.ceil(words / wordsPerMinute);
     return `${minutes} min read`;

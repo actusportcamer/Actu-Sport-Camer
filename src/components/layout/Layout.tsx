@@ -9,7 +9,9 @@ export default function Layout() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <img src={pow} className='sm:hidden inline h-36' />
+      <a href='https://technovacorp.vercel.app/' target="_blank" rel="noopener noreferrer">
+        <img src={pow} className='sm:hidden inline h-36' />
+      </a>
       <Header />
       <main className="flex-grow">
         <Outlet />
