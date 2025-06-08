@@ -20,7 +20,8 @@ export default function RecentPostsSection({ title = "Recent Articles" }: Recent
         '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
         '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
           [
-            Query.limit(3)
+            Query.limit(6),
+            Query.orderAsc('view')
           ]
         )
         setPosts(res.documents); // Returns an array of documents
