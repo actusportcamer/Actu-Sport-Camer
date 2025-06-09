@@ -24,7 +24,7 @@ export default function BlogPage() {
         '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
           [
             Query.orderDesc('publishedAt'),
-            Query.limit(9)
+            Query.limit(8)
           ]
         );
         setPost(response.documents); // Returns an array of documents
