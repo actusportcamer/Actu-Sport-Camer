@@ -21,7 +21,8 @@ export default function TagPage() {
         '68379f30000f7d86e98d',       // Replace with your Appwrite database ID
         '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
           [
-            Query.search('tags', tag)
+            Query.search('tags', tag),
+            Query.orderDesc('publishedAt')
           ]
         );
         setPost(response.documents); // Returns an array of documents
