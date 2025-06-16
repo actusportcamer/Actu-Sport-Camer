@@ -256,6 +256,8 @@ export const tags: string[] = [
   "nfl",
   "ufc",
   "wwe",
+  "winner",
+  "game-set",
   "martial-arts",
   "trophy",
   "finals",
@@ -277,6 +279,7 @@ export const tags: string[] = [
   "african-football",
   "european-leagues",
   "american-sports",
+  "records",
   "local-heroes"
 ];
 

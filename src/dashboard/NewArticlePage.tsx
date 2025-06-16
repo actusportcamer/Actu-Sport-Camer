@@ -263,14 +263,14 @@ export default function NewArticlePage() {
                   value={formData.f_title}
                   onChange={handleChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter article title"
+                  placeholder="Titre"
                   required
                 />
               </div>
 
               <div>
                 <label htmlFor="f_excerpt" className="block text-sm font-medium text-gray-700 mb-1">
-                  French Excerpt
+                  French Extrait
                 </label>
                 <textarea
                   id="f_excerpt"
@@ -279,7 +279,7 @@ export default function NewArticlePage() {
                   onChange={handleChange}
                   rows={3}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Brief description of the article"
+                  placeholder="Brief sur l'article"
                   required
                 />
               </div>
@@ -295,7 +295,7 @@ export default function NewArticlePage() {
                     setFormData((prev) => ({ ...prev, f_content: value }))
                   }
                   className="w-full h-auto border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Write your article content here..."
+                  placeholder="Ecrit le contenue de ton article..."
                   required
                 />
               </div>
