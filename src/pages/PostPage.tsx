@@ -136,7 +136,7 @@ export default function PostPage() {
             : 'text-gray-600 hover:bg-gray-100'
         }`}
       >
-        French
+        Français
       </div>
     </div>
    </div>
