@@ -1,19 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Container from '../ui/Container';
-import { Category } from '../../types';
-import { Code, PenTool, Cpu, Database, Layers, BarChart } from 'lucide-react';
-
+import img1 from '../../img/soccer-ball.svg'
+import img2 from '../../img/basket.png'
+import img3 from '../../img/tennis.png'
+import img4 from '../../img/cycl.png'
+import img5 from '../../img/vol.png'
+import img6 from '../../img/cage.png'
+import img7 from '../../img/other.png'
 
 // Map category names to icons
 const categoryIcons: Record<string, React.ReactNode> = {
-  'Football': <Cpu className="h-6 w-6" />,
-  "Basketball": <PenTool className="h-6 w-6" />,
-  "Tennis": <Code className="h-6 w-6" />,
-  "Cycling": <Layers className="h-6 w-6" />,
-  "Volleyball": <Database className="h-6 w-6" />,
-  "MMA": <BarChart className="h-6 w-6" />,
-  "Sports": <BarChart className="h-6 w-6" />
+  'Football': <img src={img1} className="h-6 rounded-full w-6" />,
+  "Basketball": <img src={img2} className="h-6 rounded-full w-6" />,
+  "Tennis": <img src={img3} className="h-6 rounded-full w-6" />,
+  "Cycling": <img src={img4} className="h-6 rounded-full w-6" />,
+  "Volleyball": <img src={img5} className="h-6 rounded-full w-6" />,
+  "MMA": <img src={img6} className="h-6 rounded-full w-6" />,
+  "Sports": <img src={img7} className="h-6 rounded-full w-6" />,
 };
 
 // Get icon for a category or default to Code icon
