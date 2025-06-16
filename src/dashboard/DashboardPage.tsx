@@ -89,7 +89,7 @@ export default function DashboardPage() {
             <div className="space-y-4">
               {/* Categories List */}
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">Footabll</span>
+                <span className="text-gray-700">Football</span>
                 <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                   Published
                 </span>
