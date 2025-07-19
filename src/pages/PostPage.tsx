@@ -112,13 +112,6 @@ export default function PostPage() {
     <>
       <Helmet>
         <title>{post.title} | Actu Sport Camer</title>
-        <meta name="description" content={post.excerpt} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt} />
-        <meta property="og:image" content={post.coverImage} />
-        <meta property="og:url" content={post.coverImage} />
-        <meta property="og:type" content={post.title} />
-        <meta name="twitter:card" content={post.title} />
       </Helmet>
       
       <article className="pt-8 pb-16 max-w-7xl">

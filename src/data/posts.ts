@@ -288,6 +288,7 @@ export const tags: string[] = [
   "european-sports",
   "american-sports",
   "records",
+  "legends",
   "local-heroes"
 ];
 
