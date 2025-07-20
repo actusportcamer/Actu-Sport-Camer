@@ -21,6 +21,8 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
   }, []);
 
   const title = showFrench ? post.f_title : post.title;
+  
+  const desc = showFrench ? post.f_excerpt : post.excerpt;
 
   const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -51,7 +53,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-grow">
-        <p className="text-gray-600 mt-2 line-clamp-3">{post.excerpt}</p>
+        <p className="text-gray-600 mt-2 line-clamp-3">{desc}</p>
       </CardContent>
       <CardFooter className="border-t border-gray-100 pt-4 text-sm text-gray-500 justify-between">
         <div className="flex justify-between items-center w-80">

@@ -1,8 +1,11 @@
 export interface Post {
-  id: string;
+  $id: string;
+  f_title: string;
   title: string;
   slug: string;
+  f_excerpt: string;
   excerpt: string;
+  f_content: string;
   content: string;
   coverImage: string;
   category: string;
