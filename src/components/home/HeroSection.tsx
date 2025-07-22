@@ -87,7 +87,7 @@ export default function HeroSection() {
         <div className="">
       <Swiper
         modules={[Pagination, Autoplay]}
-        spaceBetween={5}
+        spaceBetween={2}
         slidesPerView={1}
         pagination={{ clickable: true }}
         autoplay={{ delay: 2000 }}
