@@ -70,7 +70,7 @@ export default function BlogPage() {
       </section>
       
       <section className="py-12">
-        <Container>
+        <div className='max-w-7xl mx-auto p-2'>
           <div className="flex flex-col lg:flex-row gap-10">
             {/* Main content */}
             <div className="lg:w-2/3">
@@ -115,7 +115,7 @@ export default function BlogPage() {
               </div>
             </div>
           </div>
-        </Container>
+        </div>
       </section>
     </>
   );

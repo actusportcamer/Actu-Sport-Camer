@@ -80,7 +80,7 @@ export default function CategoryPage() {
       </section>
       
       <section className="py-12">
-        <Container>
+        <div className='max-w-7xl mx-auto p-2'>
           {posts.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-xl text-gray-600">No articles found in this category yet.</p>
@@ -92,7 +92,7 @@ export default function CategoryPage() {
               ))}
             </div>
           )}
-        </Container>
+        </div>
       </section>
     </>
   );

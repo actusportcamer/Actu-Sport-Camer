@@ -13,11 +13,11 @@ interface FeaturedPostsSectionProps {
 export default function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
   return (
     <section className="py-16">
-      <Container>
+      <div className='max-w-7xl mx-auto p-2'>
         <div className="flex justify-between items-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900">Featured Articles</h2>
           <Link to="/blog">
-            <Button variant="outline" className="group">
+            <Button variant="outline" className="group border-gray-800 font-semibold">
               View all
               <ArrowRight size={16} className="ml-2 transition-transform group-hover:translate-x-1" />
             </Button>
@@ -29,7 +29,7 @@ export default function FeaturedPostsSection({ posts }: FeaturedPostsSectionProp
             <PostCard key={post.id} post={post} featured />
           ))}
         </div>
-      </Container>
+      </div>
     </section>
   );
 }
