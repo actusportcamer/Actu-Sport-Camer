@@ -21,7 +21,7 @@ export default function HomePage() {
         '68379fa2002f31d6d937',     // Replace with your Appwrite collection ID
           [
             Query.orderDesc('publishedAt'),
-            Query.limit(3)
+            Query.limit(6)
           ]
         );
         setFeaturedBlog(response.documents); // Returns an array of documents
