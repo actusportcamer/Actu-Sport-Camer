@@ -110,8 +110,8 @@ export default function ArticlesPage() {
                           className="h-10 w-10 rounded object-cover"
                         />
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{post.title}</div>
-                          <div className="text-sm text-gray-500">{post.excerpt.substring(0, 60)}...</div>
+                          <div className="text-sm font-medium text-gray-900 line-clamp-2">{post.title}</div>
+                          <div className="text-sm text-gray-500 line-clamp-2">{post.excerpt.substring(0, 60)}...</div>
                         </div>
                       </div>
                     </td>
