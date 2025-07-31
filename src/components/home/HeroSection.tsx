@@ -102,7 +102,7 @@ export default function HeroSection() {
                 className="w-full h-[630px] object-cover"
               />
               <div className="absolute bottom-0 bg-black/70 text-white p-8  w-full font-semibold">
-                <p className='px-2.5 py-0.5 mb-2 w-20 bg-blue-50 text-blue-700 text-center rounded-full hover:bg-blue-100 transition-colors'>{post.category}</p>
+                <p className='px-2.5 py-0.5 mb-2 w-fit bg-blue-50 text-blue-700 text-center rounded-full hover:bg-blue-100 transition-colors'>{post.category}</p>
                 <p className='md:text-5xl text-2xl line-clamp-2'>{showFrench ? post.f_title : post.title}</p>
                 <p className='text-md line-clamp-2 text-gray-400 md:w-[1000px]'>{showFrench ? post.f_excerpt : post.excerpt}</p>
               </div>
