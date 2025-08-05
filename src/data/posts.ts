@@ -241,7 +241,7 @@ export const tags: string[] = [
   "basketball",
   "baseball",
   "tennis",
-  "judo", 
+  "judo",
   "natation",
   "cycling",
   "combat",

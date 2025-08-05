@@ -216,7 +216,7 @@ export default function PostPage() {
                 />
               </div>
 
-                <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-900 leading-tight mb-4">
+                <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-justify text-gray-900 leading-tight mb-4">
                   {post.excerpt}
                 </h1>
               
